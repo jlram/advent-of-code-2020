@@ -37,14 +37,28 @@ func main() {
 		1958, 1914, 1906, 178, 1979, 1994, 2004, 1862, 1704, 1903,
 		1997, 1876, 1992, 1864, 1932, 1918, 1962, 1802, 1278, 1861}
 
-	fmt.Println(twentytwenty(given_input))
+	fmt.Println(twonumbers(given_input))
+	fmt.Println(threenumbers(given_input))
 }
 
-func twentytwenty(numbers []int) int {
+func twonumbers(numbers []int) int {
 	for _, value := range numbers {
 		for _, value2 := range numbers {
 			if value+value2 == 2020 {
 				return value * value2
+			}
+		}
+	}
+	return 0
+}
+
+func threenumbers(numbers []int) int { // Want to do something better than triple nested loop
+	for _, value := range numbers {
+		for _, value2 := range numbers {
+			for _, value3 := range numbers {
+				if value+value2+value3 == 2020 {
+					return value * value2 * value3
+				}
 			}
 		}
 	}
