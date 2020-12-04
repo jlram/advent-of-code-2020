@@ -19,6 +19,34 @@ import (
 	"strconv"
 )
 
+func part_one (input []string) int{
+	correct := 0
+
+	for _, v := range input {
+		
+		repeated := 0
+
+		token := strings.Split(strings.Split(v, ":")[0], " ")
+		tk_first, tk_last, tk_letter := strings.Split(token[0], "-")[0], strings.Split(token[0], "-")[1], token[1]
+		
+		pwd := strings.Replace(strings.Split(v, ":")[1], " ", "", -1)
+
+		for _, char := range pwd {
+			if string(char) == tk_letter {
+				repeated++
+			}
+		}
+		parsed_first, _ := strconv.Atoi(tk_first)
+		parsed_last, _ := strconv.Atoi(tk_last)
+
+		if repeated >= parsed_first && repeated <= parsed_last {
+			correct++
+		}
+	}
+
+	return correct
+}
+
 func main () {
 	given_input := []string {
 		"1-14 b: bbbbbbbbbbbbbbbbbbb",
@@ -1022,33 +1050,5 @@ func main () {
 		"3-8 m: tmmmmmmmmmmmj",
 		"2-5 f: mmcfxtk"}
 	
-		fmt.Println(part_one(given_input))
-	}
-
-func part_one (input []string) int{
-	correct := 0
-
-	for _, v := range input {
-		
-		repeated := 0
-
-		token := strings.Split(strings.Split(v, ":")[0], " ")
-		tk_first, tk_last, tk_letter := strings.Split(token[0], "-")[0], strings.Split(token[0], "-")[1], token[1]
-		
-		pwd := strings.Replace(strings.Split(v, ":")[1], " ", "", -1)
-
-		for _, char := range pwd {
-			if string(char) == tk_letter {
-				repeated++
-			}
-		}
-		parsed_first, _ := strconv.Atoi(tk_first)
-		parsed_last, _ := strconv.Atoi(tk_last)
-
-		if repeated >= parsed_first && repeated <= parsed_last {
-			correct++
-		}
-	}
-
-	return correct
+	fmt.Println(part_one(given_input))
 }
