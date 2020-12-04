@@ -1,4 +1,4 @@
-// desc: // desc: https://adventofcode.com/2020/day/2
+ // desc: https://adventofcode.com/2020/day/2
 
 package main
 
