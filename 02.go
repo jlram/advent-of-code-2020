@@ -1,41 +1,45 @@
-// Your flight departs in a few days from the coastal airport; the easiest way down to the coast from here is via toboggan.
-// The shopkeeper at the North Pole Toboggan Rental Shop is having a bad day. 
-// "Something"s wrong with our computers; we can"t log in!" You ask if you can take a look.
-// Their password database seems to be a little corrupted: 
-// 		some of the passwords wouldn"t have been allowed by the Official Toboggan Corporate Policy that was in effect when they were chosen.
-// To try to debug the problem"
-// they have created a list (your puzzle input) of passwords (according to the corrupted database) and the corporate policy when that password was set.
-
-// Each line gives the password policy and then the password. 
-// The password policy indicates the lowest and highest number of times a given letter must appear for the password to be valid. 
-// For example 1-3 a: abcde
-// 1-3 a means that the password must contain a at least 1 time and at most 3 times.
-
 package main
 
 import (
 	"fmt"
-	"strings"
 	"strconv"
+	"strings"
 )
 
-func part_one (input []string) int{
-	correct := 0
+// Your flight departs in a few days from the coastal airport; the easiest way down to the coast from here is via toboggan.
+// The shopkeeper at the North Pole Toboggan Rental Shop is having a bad day.
+// "Something"s wrong with our computers; we can"t log in!" You ask if you can take a look.
+// Their password database seems to be a little corrupted:
+// 		some of the passwords wouldn"t have been allowed by the Official Toboggan Corporate Policy that was in effect when they were chosen.
+// To try to debug the problem"
+// they have created a list (your puzzle input) of passwords (according to the corrupted database) and the corporate policy when that password was set.
 
+// Each line gives the password policy and then the password.
+// The password policy indicates the lowest and highest number of times a given letter must appear for the password to be valid.
+// For example 1-3 a: abcde
+// 1-3 a means that the password must contain a at least 1 time and at most 3 times.
+
+func normalize_token(v string) (tk_first string, tk_last string, tk_letter string, pwd string) {
+	token := strings.Split(strings.Split(v, ":")[0], " ")
+	tk_first, tk_last, tk_letter = strings.Split(token[0], "-")[0], strings.Split(token[0], "-")[1], token[1]
+	pwd = strings.Replace(strings.Split(v, ":")[1], " ", "", -1)
+
+	return
+}
+
+func part_one(input []string) int {
+	correct := 0
 	for _, v := range input {
-		
 		repeated := 0
 
-		token := strings.Split(strings.Split(v, ":")[0], " ")
-		tk_first, tk_last, tk_letter := strings.Split(token[0], "-")[0], strings.Split(token[0], "-")[1], token[1]
-		
-		pwd := strings.Replace(strings.Split(v, ":")[1], " ", "", -1)
+		tk_first, tk_last, tk_letter, pwd := normalize_token(v)
 
 		for _, char := range pwd {
 			if string(char) == tk_letter {
 				repeated++
 			}
 		}
+
 		parsed_first, _ := strconv.Atoi(tk_first)
 		parsed_last, _ := strconv.Atoi(tk_last)
 
@@ -47,8 +51,35 @@ func part_one (input []string) int{
 	return correct
 }
 
-func main () {
-	given_input := []string {
+// Each policy actually describes two positions in the password, where 1 means the first character, 2 means the second character, and so on.
+// (Be careful; Toboggan Corporate Policies have no concept of "index zero"!)
+// Exactly one of these positions must contain the given letter.
+// Other occurrences of the letter are irrelevant for the purposes of policy enforcement.
+
+// Given the same example list from above:
+
+// 1-3 a: abcde --> is valid: position 1 contains a and position 3 does not.
+// 1-3 b: cdefg --> is invalid: neither position 1 nor position 3 contains b.
+// 2-9 c: ccccccccc --> is invalid: both position 2 and position 9 contain c.
+// How many passwords are valid according to the new interpretation of the policies?
+func part_two(input []string) int {
+	correct := 0
+	for _, v := range input {
+		tk_first, tk_last, tk_letter, pwd := normalize_token(v)
+
+		index_first, _ := strconv.Atoi(tk_first)
+		index_last, _ := strconv.Atoi(tk_last)
+
+		if (string(pwd[index_first-1]) == tk_letter && string(pwd[index_last-1]) != tk_letter) ||
+			(string(pwd[index_first-1]) != tk_letter && string(pwd[index_last-1]) == tk_letter) {
+			correct++
+		}
+	}
+	return correct
+}
+
+func main() {
+	given_input := []string{
 		"1-14 b: bbbbbbbbbbbbbbbbbbb",
 		"3-14 v: vvpvvvmvvvvvvvv",
 		"2-5 m: mfvxmmm",
@@ -1049,6 +1080,7 @@ func main () {
 		"8-9 q: qssqqxqqcqqgkzbq",
 		"3-8 m: tmmmmmmmmmmmj",
 		"2-5 f: mmcfxtk"}
-	
+
 	fmt.Println(part_one(given_input))
+	fmt.Println(part_two(given_input))
 }
