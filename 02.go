@@ -1,3 +1,5 @@
+// desc: // desc: https://adventofcode.com/2020/day/2
+
 package main
 
 import (
@@ -5,19 +7,6 @@ import (
 	"strconv"
 	"strings"
 )
-
-// Your flight departs in a few days from the coastal airport; the easiest way down to the coast from here is via toboggan.
-// The shopkeeper at the North Pole Toboggan Rental Shop is having a bad day.
-// "Something"s wrong with our computers; we can"t log in!" You ask if you can take a look.
-// Their password database seems to be a little corrupted:
-// 		some of the passwords wouldn"t have been allowed by the Official Toboggan Corporate Policy that was in effect when they were chosen.
-// To try to debug the problem"
-// they have created a list (your puzzle input) of passwords (according to the corrupted database) and the corporate policy when that password was set.
-
-// Each line gives the password policy and then the password.
-// The password policy indicates the lowest and highest number of times a given letter must appear for the password to be valid.
-// For example 1-3 a: abcde
-// 1-3 a means that the password must contain a at least 1 time and at most 3 times.
 
 func normalize_token(v string) (tk_first string, tk_last string, tk_letter string, pwd string) {
 	token := strings.Split(strings.Split(v, ":")[0], " ")
@@ -51,17 +40,6 @@ func part_one(input []string) int {
 	return correct
 }
 
-// Each policy actually describes two positions in the password, where 1 means the first character, 2 means the second character, and so on.
-// (Be careful; Toboggan Corporate Policies have no concept of "index zero"!)
-// Exactly one of these positions must contain the given letter.
-// Other occurrences of the letter are irrelevant for the purposes of policy enforcement.
-
-// Given the same example list from above:
-
-// 1-3 a: abcde --> is valid: position 1 contains a and position 3 does not.
-// 1-3 b: cdefg --> is invalid: neither position 1 nor position 3 contains b.
-// 2-9 c: ccccccccc --> is invalid: both position 2 and position 9 contain c.
-// How many passwords are valid according to the new interpretation of the policies?
 func part_two(input []string) int {
 	correct := 0
 	for _, v := range input {

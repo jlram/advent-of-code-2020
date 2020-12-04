@@ -1,3 +1,5 @@
+// desc: https://adventofcode.com/2020/day/3
+
 package main
 
 import "fmt"
@@ -7,19 +9,19 @@ type Position struct {
 	Y int
 }
 
-func check_position (position Position, input []string, trees int) (int) {
+func check_position (x_step int, y_step int, position Position, input []string, trees int) (int) {
 	if position.Y == (len(input)-1) {
 		return trees
 	} else {
-		position.X = position.X + 3
+		position.X = position.X + x_step
 		if position.X > (len(input[0])-1) {
 			position.X = position.X - (len(input[0]))
 		}
-		position.Y++
+		position.Y = position.Y + y_step
 		if string(input[position.Y][position.X]) == "#" {
 			trees++
 		}
-		return check_position(position, input, trees)
+		return check_position(x_step, y_step, position, input, trees)
 	}
 	return 0
 }
@@ -27,7 +29,14 @@ func check_position (position Position, input []string, trees int) (int) {
 func part_one (input []string) {
 	trees := 0
 	position := Position{0,0}
-	fmt.Println(check_position(position, input, trees))
+	return check_position(3, 1 ,position, input, trees)
+}
+
+func part_two (input[]string) (int) {
+	trees := 0
+	position := Position{0,0}
+	return check_position(1, 1 ,position, input, trees) * check_position(3, 1 ,position, input, trees) * check_position(5, 1 ,position, input, trees) *
+	check_position(7, 1 ,position, input, trees) * check_position(1, 2 ,position, input, trees)
 }
 
 func main () {
@@ -356,6 +365,7 @@ func main () {
 "..#.....................##...##",
 "#..#.#......##...##..#......#.."}
 
-part_one(given_input)
+fmt.Println(part_one(given_input))
+fmt.Println(part_two(given_input))
 }
 
