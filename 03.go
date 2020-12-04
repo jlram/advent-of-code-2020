@@ -26,7 +26,7 @@ func check_position (x_step int, y_step int, position Position, input []string, 
 	return 0
 }
 
-func part_one (input []string) {
+func part_one (input []string) (int){
 	trees := 0
 	position := Position{0,0}
 	return check_position(3, 1 ,position, input, trees)
