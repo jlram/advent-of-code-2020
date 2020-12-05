@@ -5,30 +5,38 @@ import (
 	"strings"
 )
 
-func part_one (input string) int {
-	passports := strings.Split(input, "\n\t\n")
-
+func part_one(input string) int {
+	passports := strings.Split(input, "\n\t\n") // Split blank lines and tab to retrieve each passport
+	valid_counter := 0
 	for _, value := range passports {
-		attrs := strings.Split(value, " ")
-
+		attrs := strings.Split(strings.Replace(value, "\n\t", " ", -1), " ") // Turn linebreaks into spaces and retrieve attributes from passport
 		passport := make(map[string]string)
+
 		for _, attr := range attrs {
 			tuple := strings.Split(attr, ":")
-
-			passport[tuple[0]] = tuple[1]
-			
+			passport[strings.Replace(tuple[0], "\t", "", -1)] = tuple[1] // Delete tabs
 		}
-		fmt.Println(passport["iyr"])
-		
-		
-	}
 
-	return 0
+		_, okbyr := passport["byr"]
+		_, okiyr := passport["iyr"]
+		_, okeyr := passport["eyr"]
+		_, okhgt := passport["hgt"]
+		_, okhcl := passport["hcl"]
+		_, okecl := passport["ecl"]
+		_, okpid := passport["pid"]
+
+		valid := okbyr && okiyr && okeyr && okhgt && okhcl && okecl && okpid
+
+		if valid {
+			valid_counter++
+		}
+	}
+	return valid_counter
 }
 
-func main () {
-	given_input := 
-	`iyr:2015 hgt:59cm byr:2029 cid:219 pid:9381688753 eyr:1992 hcl:#b6652a ecl:#7a0fa6
+func main() {
+	// As given_input is a raw string, declared using reversed commas, I will need to deal with tabs, linebreaks and blank lines in my function
+	given_input := `iyr:2015 hgt:59cm byr:2029 cid:219 pid:9381688753 eyr:1992 hcl:#b6652a ecl:#7a0fa6
 	
 	ecl:blu iyr:2018 pid:943614755 cid:335
 	byr:1968
@@ -1056,5 +1064,5 @@ func main () {
 	ecl:blu byr:2002 eyr:2028 pid:998185490 cid:165 iyr:2020
 	hgt:188cm hcl:#c0946f`
 
-	fmt.Print(part_one(given_input))
+	fmt.Println(part_one(given_input))
 }
