@@ -3,20 +3,28 @@ package main
 
 import (
 	"fmt"
+	"regexp"
+	"strconv"
 	"strings"
 )
 
-func part_one(input string) int {
-	passports := strings.Split(input, "\n\t\n") // Split blank lines and tab to retrieve each passport
+func read_passport(value string) map[string]string {
+
+	attrs := strings.Split(strings.Replace(value, "\n\t", " ", -1), " ") // Turn linebreaks into spaces and retrieve attributes from passport
+	passport := make(map[string]string)
+
+	for _, attr := range attrs {
+		tuple := strings.Split(attr, ":")
+		passport[strings.Replace(tuple[0], "\t", "", -1)] = tuple[1] // Delete tabs
+	}
+
+	return passport
+}
+
+func part_one(passports []string) int {
 	valid_counter := 0
 	for _, value := range passports {
-		attrs := strings.Split(strings.Replace(value, "\n\t", " ", -1), " ") // Turn linebreaks into spaces and retrieve attributes from passport
-		passport := make(map[string]string)
-
-		for _, attr := range attrs {
-			tuple := strings.Split(attr, ":")
-			passport[strings.Replace(tuple[0], "\t", "", -1)] = tuple[1] // Delete tabs
-		}
+		passport := read_passport(value)
 
 		_, okbyr := passport["byr"]
 		_, okiyr := passport["iyr"]
@@ -25,6 +33,69 @@ func part_one(input string) int {
 		_, okhcl := passport["hcl"]
 		_, okecl := passport["ecl"]
 		_, okpid := passport["pid"]
+
+		valid := okbyr && okiyr && okeyr && okhgt && okhcl && okecl && okpid
+
+		if valid {
+			valid_counter++
+		}
+	}
+	return valid_counter
+}
+
+func part_two(passports []string) int {
+	valid_counter := 0
+	for _, value := range passports {
+		passport := read_passport(value)
+
+		// 4 digits, greater than 1920 and smaller than 2002
+		byr, _ := strconv.Atoi(passport["byr"])
+		okbyr := len(passport["byr"]) == 4 && byr >= 1920 && byr <= 2002
+
+		// 4 digits, greater than 2010 and smaller than 2020
+		iyr, _ := strconv.Atoi(passport["iyr"])
+		okiyr := len(passport["iyr"]) == 4 && iyr >= 2010 && iyr <= 2020
+
+		// 4 digits, greater than 2020 and smaller than 2030
+		eyr, _ := strconv.Atoi(passport["eyr"])
+		okeyr := len(passport["eyr"]) == 4 && eyr >= 2020 && eyr <= 2030
+
+		// If cm, greater than 150 and smaller than 192. If in, greater than 59 and smaller than 76
+		okhgt := false
+		if str, ok := passport["hgt"]; ok {
+			re := regexp.MustCompile("[0-9]+")
+			measure, _ := strconv.Atoi(re.FindAllString(str, -1)[0])
+			if strings.Contains(str, "cm") && measure >= 150 && measure <= 193 {
+				okhgt = true
+			} else if strings.Contains(str, "in") && measure >= 59 && measure <= 76 {
+				okhgt = true
+			}
+		}
+
+		// Hex color code validator
+		okhcl := false
+		if str, ok := passport["hcl"]; ok {
+			re := "^#(?:[0-9a-fA-F]{3}){1,2}$"
+			okhcl, _ = regexp.MatchString(re, str)
+		}
+
+		// Needs to be one of the values listed below
+		okecl := false
+		if str, ok := passport["ecl"]; ok {
+			valid_ecl := []string{"amb", "blu", "brn", "gry", "grn", "hzl", "oth"}
+
+			for _, value := range valid_ecl {
+				if str == value {
+					okecl = true
+				}
+			}
+		}
+
+		// 9 digits, all numbers.
+		okpid := false
+		if _, err := strconv.Atoi(passport["pid"]); err == nil && len(passport["pid"]) == 9 {
+			okpid = true
+		}
 
 		valid := okbyr && okiyr && okeyr && okhgt && okhcl && okecl && okpid
 
@@ -1064,6 +1135,8 @@ func main() {
 	
 	ecl:blu byr:2002 eyr:2028 pid:998185490 cid:165 iyr:2020
 	hgt:188cm hcl:#c0946f`
+	passports := strings.Split(given_input, "\n\t\n") // Split blank lines and tab to retrieve each passport
 
-	fmt.Println(part_one(given_input))
+	fmt.Println(part_one(passports))
+	fmt.Println(part_two(passports))
 }
