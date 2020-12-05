@@ -1,17 +1,20 @@
+// desc: https://adventofcode.com/2020/day/5
+
 package main
 
 import "fmt"
 
 func part_one(input []string) int {
 	highestSeat := 0
+
 	for _, value := range input {
 		maxRow := 127
 		minRow := 0
 		for _, v := range value[:7] {
 			if string(v) == "B" {
-				minRow = minRow + ((maxRow - minRow) / 2) + 1
+				minRow = minRow + ((maxRow - minRow) / 2) + 1 // Take the upper half
 			} else {
-				maxRow = minRow + ((maxRow - minRow) / 2)
+				maxRow = minRow + ((maxRow - minRow) / 2) // Take the lower half
 			}
 		}
 
@@ -19,9 +22,9 @@ func part_one(input []string) int {
 		minCol := 0
 		for _, v := range value[7:] {
 			if string(v) == "R" {
-				minCol = minCol + ((maxCol - minCol) / 2) + 1
+				minCol = minCol + ((maxCol - minCol) / 2) + 1 // Take the upper half
 			} else {
-				maxCol = minCol + ((maxCol - minCol) / 2)
+				maxCol = minCol + ((maxCol - minCol) / 2) // Take the lower half
 			}
 		}
 
@@ -33,7 +36,6 @@ func part_one(input []string) int {
 			}
 		}
 	}
-
 	return highestSeat
 }
 
