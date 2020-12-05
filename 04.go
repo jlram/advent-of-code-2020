@@ -1,4 +1,4 @@
-// Desc https://adventofcode.com/2020/day/4
+// desc: https://adventofcode.com/2020/day/4
 package main
 
 import (
