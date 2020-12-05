@@ -27,7 +27,6 @@ func read_seat(value string) int {
 			maxCol = minCol + ((maxCol - minCol) / 2) // Take the lower half
 		}
 	}
-
 	seat := maxRow*8 + maxCol
 	return seat
 }
@@ -40,7 +39,6 @@ func part_one(input []string) int {
 			highestSeat = seat
 		}
 	}
-
 	return highestSeat
 }
 
@@ -59,7 +57,6 @@ func part_two(input []string) int {
 			return s + 1
 		}
 	}
-
 	return 0
 }
 
