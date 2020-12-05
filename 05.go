@@ -2,41 +2,65 @@
 
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"sort"
+)
+
+func read_seat(value string) int {
+	maxRow := 127
+	minRow := 0
+	for _, v := range value[:7] {
+		if string(v) == "B" {
+			minRow = minRow + ((maxRow - minRow) / 2) + 1 // Take the upper half
+		} else {
+			maxRow = minRow + ((maxRow - minRow) / 2) // Take the lower half
+		}
+	}
+
+	maxCol := 7
+	minCol := 0
+	for _, v := range value[7:] {
+		if string(v) == "R" {
+			minCol = minCol + ((maxCol - minCol) / 2) + 1 // Take the upper half
+		} else {
+			maxCol = minCol + ((maxCol - minCol) / 2) // Take the lower half
+		}
+	}
+
+	seat := maxRow*8 + maxCol
+	return seat
+}
 
 func part_one(input []string) int {
 	highestSeat := 0
-
 	for _, value := range input {
-		maxRow := 127
-		minRow := 0
-		for _, v := range value[:7] {
-			if string(v) == "B" {
-				minRow = minRow + ((maxRow - minRow) / 2) + 1 // Take the upper half
-			} else {
-				maxRow = minRow + ((maxRow - minRow) / 2) // Take the lower half
-			}
-		}
-
-		maxCol := 7
-		minCol := 0
-		for _, v := range value[7:] {
-			if string(v) == "R" {
-				minCol = minCol + ((maxCol - minCol) / 2) + 1 // Take the upper half
-			} else {
-				maxCol = minCol + ((maxCol - minCol) / 2) // Take the lower half
-			}
-		}
-
-		if maxRow == minRow && maxCol == minCol {
-			seat := maxRow*8 + maxCol
-
-			if seat > highestSeat {
-				highestSeat = seat
-			}
+		seat := read_seat(value)
+		if seat > highestSeat {
+			highestSeat = seat
 		}
 	}
+
 	return highestSeat
+}
+
+func part_two(input []string) int {
+	var seats []int
+
+	for _, value := range input {
+		seat := read_seat(value)
+
+		seats = append(seats, seat)
+	}
+
+	sort.Ints(seats)
+	for i, s := range seats {
+		if seats[i+1]-s == 2 {
+			return s + 1
+		}
+	}
+
+	return 0
 }
 
 func main() {
@@ -888,4 +912,5 @@ func main() {
 		"FBBFFBFLLR"}
 
 	fmt.Println(part_one(given_input))
+	fmt.Println(part_two(given_input))
 }
