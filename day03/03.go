@@ -4,7 +4,7 @@ package main
 
 import "fmt"
 
-// Position asodasjd
+// Position: Coordinates X and Y which help us locate our "skier"
 type Position struct {
 	X int
 	Y int
