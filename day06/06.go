@@ -10,6 +10,7 @@ import (
 
 func partOne(input []string) int {
 	count := 0
+
 	for _, group := range input {
 		m := make(map[string]int)
 		for _, letter := range strings.Replace(strings.Replace(group, "\r", "", -1), "\n", "", -1) {
@@ -26,6 +27,7 @@ func partTwo(input []string) int {
 	count := 0
 	for _, group := range input {
 		m := make(map[string]int)
+
 		for _, letter := range strings.Replace(strings.Replace(group, "\r", "", -1), "\n", "", -1) {
 			if _, ok := m[string(letter)]; ok {
 				m[string(letter)]++
