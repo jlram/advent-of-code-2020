@@ -5,7 +5,7 @@ package main
 import "fmt"
 
 func main() {
-	given_input := []int{1652, 1998, 1677, 1855, 1955, 1875, 1993, 1860, 1752, 1936,
+	givenInput := []int{1652, 1998, 1677, 1855, 1955, 1875, 1993, 1860, 1752, 1936,
 		1816, 1924, 1872, 2000, 1967, 1882, 1737, 1801, 1832, 1985,
 		1933, 1911, 1894, 1384, 1871, 1607, 1858, 1950, 222, 1931,
 		1635, 1960, 1909, 1884, 1921, 1959, 1981, 1920, 1684, 1734,
@@ -26,11 +26,11 @@ func main() {
 		1958, 1914, 1906, 178, 1979, 1994, 2004, 1862, 1704, 1903,
 		1997, 1876, 1992, 1864, 1932, 1918, 1962, 1802, 1278, 1861}
 
-	fmt.Println(twonumbers(given_input))
-	fmt.Println(threenumbers(given_input))
+	fmt.Println(partOne(givenInput))
+	fmt.Println(partTwo(givenInput))
 }
 
-func twonumbers(numbers []int) int {
+func partOne(numbers []int) int {
 	for _, value := range numbers {
 		for _, value2 := range numbers {
 			if value+value2 == 2020 {
@@ -41,7 +41,7 @@ func twonumbers(numbers []int) int {
 	return 0
 }
 
-func threenumbers(numbers []int) int { // Want to do something better than triple nested loop
+func partTwo(numbers []int) int { // Want to do something better than triple nested loop
 	for _, value := range numbers {
 		for _, value2 := range numbers {
 			for _, value3 := range numbers {

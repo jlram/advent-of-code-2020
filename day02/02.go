@@ -1,4 +1,4 @@
- // desc: https://adventofcode.com/2020/day/2
+// desc: https://adventofcode.com/2020/day/2
 
 package main
 
@@ -8,31 +8,31 @@ import (
 	"strings"
 )
 
-func normalize_token(v string) (tk_first string, tk_last string, tk_letter string, pwd string) {
+func normalizeToken(v string) (tkFirst string, tkLast string, tkLetter string, pwd string) {
 	token := strings.Split(strings.Split(v, ":")[0], " ")
-	tk_first, tk_last, tk_letter = strings.Split(token[0], "-")[0], strings.Split(token[0], "-")[1], token[1]
+	tkFirst, tkLast, tkLetter = strings.Split(token[0], "-")[0], strings.Split(token[0], "-")[1], token[1]
 	pwd = strings.Replace(strings.Split(v, ":")[1], " ", "", -1)
 
 	return
 }
 
-func part_one(input []string) int {
+func partOne(input []string) int {
 	correct := 0
 	for _, v := range input {
 		repeated := 0
 
-		tk_first, tk_last, tk_letter, pwd := normalize_token(v)
+		tkFirst, tkLast, tkLetter, pwd := normalizeToken(v)
 
 		for _, char := range pwd {
-			if string(char) == tk_letter {
+			if string(char) == tkLetter {
 				repeated++
 			}
 		}
 
-		parsed_first, _ := strconv.Atoi(tk_first)
-		parsed_last, _ := strconv.Atoi(tk_last)
+		parsedFirst, _ := strconv.Atoi(tkFirst)
+		parsedLast, _ := strconv.Atoi(tkLast)
 
-		if repeated >= parsed_first && repeated <= parsed_last {
+		if repeated >= parsedFirst && repeated <= parsedLast {
 			correct++
 		}
 	}
@@ -40,16 +40,16 @@ func part_one(input []string) int {
 	return correct
 }
 
-func part_two(input []string) int {
+func partTwo(input []string) int {
 	correct := 0
 	for _, v := range input {
-		tk_first, tk_last, tk_letter, pwd := normalize_token(v)
+		tkFirst, tkLast, tkLetter, pwd := normalizeToken(v)
 
-		index_first, _ := strconv.Atoi(tk_first)
-		index_last, _ := strconv.Atoi(tk_last)
+		indexFirst, _ := strconv.Atoi(tkFirst)
+		indexLast, _ := strconv.Atoi(tkLast)
 
-		if (string(pwd[index_first-1]) == tk_letter && string(pwd[index_last-1]) != tk_letter) ||
-			(string(pwd[index_first-1]) != tk_letter && string(pwd[index_last-1]) == tk_letter) {
+		if (string(pwd[indexFirst-1]) == tkLetter && string(pwd[indexLast-1]) != tkLetter) ||
+			(string(pwd[indexFirst-1]) != tkLetter && string(pwd[indexLast-1]) == tkLetter) {
 			correct++
 		}
 	}
@@ -57,7 +57,7 @@ func part_two(input []string) int {
 }
 
 func main() {
-	given_input := []string{
+	givenInput := []string{
 		"1-14 b: bbbbbbbbbbbbbbbbbbb",
 		"3-14 v: vvpvvvmvvvvvvvv",
 		"2-5 m: mfvxmmm",
@@ -1059,6 +1059,6 @@ func main() {
 		"3-8 m: tmmmmmmmmmmmj",
 		"2-5 f: mmcfxtk"}
 
-	fmt.Println(part_one(given_input))
-	fmt.Println(part_two(given_input))
+	fmt.Println(partOne(givenInput))
+	fmt.Println(partTwo(givenInput))
 }

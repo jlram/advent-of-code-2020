@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func read_passport(value string) map[string]string {
+func readPassport(value string) map[string]string {
 
 	attrs := strings.Split(strings.Replace(value, "\n\t", " ", -1), " ") // Turn linebreaks into spaces and retrieve attributes from passport
 	passport := make(map[string]string)
@@ -21,10 +21,10 @@ func read_passport(value string) map[string]string {
 	return passport
 }
 
-func part_one(passports []string) int {
-	valid_counter := 0
+func partOne(passports []string) int {
+	validCounter := 0
 	for _, value := range passports {
-		passport := read_passport(value)
+		passport := readPassport(value)
 
 		_, okbyr := passport["byr"]
 		_, okiyr := passport["iyr"]
@@ -37,16 +37,16 @@ func part_one(passports []string) int {
 		valid := okbyr && okiyr && okeyr && okhgt && okhcl && okecl && okpid
 
 		if valid {
-			valid_counter++
+			validCounter++
 		}
 	}
-	return valid_counter
+	return validCounter
 }
 
-func part_two(passports []string) int {
-	valid_counter := 0
+func partTwo(passports []string) int {
+	validCounter := 0
 	for _, value := range passports {
-		passport := read_passport(value)
+		passport := readPassport(value)
 
 		// 4 digits, greater than 1920 and smaller than 2002
 		byr, _ := strconv.Atoi(passport["byr"])
@@ -82,9 +82,9 @@ func part_two(passports []string) int {
 		// Needs to be one of the values listed below
 		okecl := false
 		if str, ok := passport["ecl"]; ok {
-			valid_ecl := []string{"amb", "blu", "brn", "gry", "grn", "hzl", "oth"}
+			validEcl := []string{"amb", "blu", "brn", "gry", "grn", "hzl", "oth"}
 
-			for _, value := range valid_ecl {
+			for _, value := range validEcl {
 				if str == value {
 					okecl = true
 				}
@@ -100,15 +100,15 @@ func part_two(passports []string) int {
 		valid := okbyr && okiyr && okeyr && okhgt && okhcl && okecl && okpid
 
 		if valid {
-			valid_counter++
+			validCounter++
 		}
 	}
-	return valid_counter
+	return validCounter
 }
 
 func main() {
-	// As given_input is a raw string, declared using reversed commas, I will need to deal with tabs, linebreaks and blank lines in my function
-	given_input := `iyr:2015 hgt:59cm byr:2029 cid:219 pid:9381688753 eyr:1992 hcl:#b6652a ecl:#7a0fa6
+	// As givenInput is a raw string, declared using reversed commas, I will need to deal with tabs, linebreaks and blank lines in my function
+	givenInput := `iyr:2015 hgt:59cm byr:2029 cid:219 pid:9381688753 eyr:1992 hcl:#b6652a ecl:#7a0fa6
 	
 	ecl:blu iyr:2018 pid:943614755 cid:335
 	byr:1968
@@ -1135,8 +1135,8 @@ func main() {
 	
 	ecl:blu byr:2002 eyr:2028 pid:998185490 cid:165 iyr:2020
 	hgt:188cm hcl:#c0946f`
-	passports := strings.Split(given_input, "\n\t\n") // Split blank lines and tab to retrieve each passport
+	passports := strings.Split(givenInput, "\n\t\n") // Split blank lines and tab to retrieve each passport
 
-	fmt.Println(part_one(passports))
-	fmt.Println(part_two(passports))
+	fmt.Println(partOne(passports))
+	fmt.Println(partTwo(passports))
 }

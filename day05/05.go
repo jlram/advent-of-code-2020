@@ -7,7 +7,7 @@ import (
 	"sort"
 )
 
-func read_seat(value string) int {
+func readSeat(value string) int {
 	maxRow := 127
 	minRow := 0
 	for _, v := range value[:7] {
@@ -31,10 +31,10 @@ func read_seat(value string) int {
 	return seat
 }
 
-func part_one(input []string) int {
+func partOne(input []string) int {
 	highestSeat := 0
 	for _, value := range input {
-		seat := read_seat(value)
+		seat := readSeat(value)
 		if seat > highestSeat {
 			highestSeat = seat
 		}
@@ -42,11 +42,11 @@ func part_one(input []string) int {
 	return highestSeat
 }
 
-func part_two(input []string) int {
+func partTwo(input []string) int {
 	var seats []int
 
 	for _, value := range input {
-		seat := read_seat(value)
+		seat := readSeat(value)
 
 		seats = append(seats, seat)
 	}
@@ -61,7 +61,7 @@ func part_two(input []string) int {
 }
 
 func main() {
-	given_input := []string{
+	givenInput := []string{
 		"FFBFBFBRRL",
 		"FBFFBFBLRR",
 		"FFFBBFBRLR",
@@ -908,6 +908,6 @@ func main() {
 		"BFFBFFFLRR",
 		"FBBFFBFLLR"}
 
-	fmt.Println(part_one(given_input))
-	fmt.Println(part_two(given_input))
+	fmt.Println(partOne(givenInput))
+	fmt.Println(partTwo(givenInput))
 }
