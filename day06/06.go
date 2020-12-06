@@ -25,6 +25,7 @@ func partOne(input []string) int {
 
 func partTwo(input []string) int {
 	count := 0
+
 	for _, group := range input {
 		m := make(map[string]int)
 
