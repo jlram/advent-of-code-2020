@@ -32,20 +32,11 @@ func partOne(input []string) int {
 			value := strings.Split(input[index], " ")
 			if value[0] == "nop" {
 				index++
-			} else if number, _ := strconv.Atoi(strings.ReplaceAll(value[1][1:], "\r", "")); value[0] == "acc" {
-				if value[1][0] == '+' { // sum symbol
-					acc += number
-					index++
-				} else { // subtract
-					acc = acc - number
-					index++
-				}
+			} else if number, _ := strconv.Atoi(strings.ReplaceAll(value[1], "\r", "")); value[0] == "acc" {
+				acc += number
+				index++
 			} else if value[0] == "jmp" {
-				if value[1][0] == '+' { // sum symbol
-					index += number
-				} else { // subtract
-					index = index - number
-				}
+				index += number
 			}
 		}
 	}
