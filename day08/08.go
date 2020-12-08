@@ -57,17 +57,19 @@ func partTwo(input []string) int {
 		acc = 0
 		index := 0
 		exit := false
+		aux := make([]string, len(input))
+		copy(aux, input)
 		var arr []int
 
 		// Changes "nop" to "jmp" and viceversa
-		if strings.Split(input[v], " ")[0] == "nop" {
-			input[v] = "jmp " + strings.Split(input[v], " ")[1]
-		} else if strings.Split(input[v], " ")[0] == "jmp" {
-			input[v] = "nop " + strings.Split(input[v], " ")[1]
+		if strings.Split(aux[v], " ")[0] == "nop" {
+			aux[v] = "jmp " + strings.Split(aux[v], " ")[1]
+		} else if strings.Split(aux[v], " ")[0] == "jmp" {
+			aux[v] = "nop " + strings.Split(aux[v], " ")[1]
 		}
 
 		for !exit {
-			if index == len(input)-1 { // If reaches the end of the input, returns acc value
+			if index == len(aux)-1 { // If reaches the end of the input, returns acc value
 				return acc
 			}
 
@@ -75,7 +77,7 @@ func partTwo(input []string) int {
 				exit = true // iterates next value
 			} else {
 				arr = append(arr, index)
-				value := strings.Split(input[index], " ")
+				value := strings.Split(aux[index], " ")
 				if value[0] == "nop" {
 					index++
 				} else if number, _ := strconv.Atoi(strings.ReplaceAll(value[1], "\r", "")); value[0] == "acc" {
@@ -85,13 +87,6 @@ func partTwo(input []string) int {
 					index += number
 				}
 			}
-		}
-
-		// Reverse changes
-		if strings.Split(input[v], " ")[0] == "nop" {
-			input[v] = "jmp " + strings.Split(input[v], " ")[1]
-		} else if strings.Split(input[v], " ")[0] == "jmp" {
-			input[v] = "nop " + strings.Split(input[v], " ")[1]
 		}
 	}
 	return 0
