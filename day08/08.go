@@ -43,9 +43,44 @@ func partOne(input []string) int {
 	return acc
 }
 
+func partTwo(input []string) int {
+	acc := 0
+	index := 0
+	var arr []int
+	exit := false
+	var possibleArr []int
+
+	for i, v := range input {
+		if strings.Contains(v, "nop") || strings.Contains(v, "nop") {
+			arr = append(possibleArr, i)
+		}
+	}
+
+	fmt.Println(possibleArr)
+
+	for !exit {
+		if find(arr, index) {
+			exit = true
+		} else {
+			arr = append(arr, index)
+			value := strings.Split(input[index], " ")
+			if value[0] == "nop" {
+				index++
+			} else if number, _ := strconv.Atoi(strings.ReplaceAll(value[1], "\r", "")); value[0] == "acc" {
+				acc += number
+				index++
+			} else if value[0] == "jmp" {
+				index += number
+			}
+		}
+	}
+	return acc
+}
+
 func main() {
 	file, _ := ioutil.ReadFile("input.txt")
 	givenInput := strings.Split(string(file), "\n")
 
 	fmt.Println(partOne(givenInput))
+	fmt.Println(partTwo(givenInput))
 }
