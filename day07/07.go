@@ -1,3 +1,5 @@
+// desc: https://adventofcode.com/2020/day/7
+
 package main
 
 import (
