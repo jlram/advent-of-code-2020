@@ -33,27 +33,51 @@ func partOne(input []int) int {
 	return 0
 }
 
-func partTwo(input []int, value int) int {
-	min, max := 0, 24
+func calculateTwo(input []int, value int) []int {
+	count := 1
+	min, max := 0, count
 	valid := false
+	arr := make([]int, count)
 	for !valid {
-		arr := make([]int, 25)
-		copy(arr, input[min:max])
+		arr = make([]int, count)
+		copy(arr, input[min:max+1])
 		for _, number := range arr {
 			for _, number2 := range arr {
-				if number+number2 == value && number != number2 {
+				if number+number2 == value && number != 0 && number2 != 0 {
 					valid = true
+					fmt.Println(number, number2)
+					return arr
 				}
 			}
 		}
-		if valid {
-			return input[min] + input[max-1]
-		}
 		min++
 		max++
+		if max == len(input)-1 {
+			count++
+			min, max = 0, count
+		}
+	}
+	return arr
+}
+
+// TODO panic: runtime error: slice bounds out of range [:1025] with capacity 1024
+func partTwo(input []int, value int) int {
+
+	arr := calculateTwo(input, value)
+
+	minValue, maxValue := 2147483647, 0
+	for _, v := range arr {
+		if v > maxValue {
+			maxValue = v
+		}
+
+		if v < minValue && v != 0 {
+			minValue = v
+		}
 	}
 
-	return 0
+	fmt.Println(minValue, maxValue, len(arr))
+	return maxValue + minValue
 }
 
 func main() {
