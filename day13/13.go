@@ -60,20 +60,14 @@ func partTwo(input []string) int {
 		timeStamp += initValue
 		for i := 0; i < len(input); {
 			gap := calcGap(input[i+1:])
-			nextNumber, err := strconv.Atoi(input[i+gap])
-
-			if err == nil {
-				if (timeStamp+i+gap)%nextNumber == 0 {
-					i += gap
-					if i == len(input)-1 {
-						found = true
-						break
-					}
-				} else {
+			nextNumber, _ := strconv.Atoi(input[i+gap])
+			if (timeStamp+i+gap)%nextNumber == 0 {
+				i += gap
+				if i == len(input)-1 {
+					found = true
 					break
 				}
 			} else {
-				println(err)
 				break
 			}
 		}
