@@ -11,7 +11,7 @@ import (
 
 var wg sync.WaitGroup
 
-// struct we use later for our channel
+// Bus --- struct we use later for our channel
 type Bus struct {
 	key   int
 	value int
@@ -51,6 +51,49 @@ func partOne(input []string) int {
 	return (minInterval - arrival) * minID
 }
 
+func partTwo(input []string) int {
+	timeStamp := 0
+	initValue, _ := strconv.Atoi(input[0]) // 41
+	found := false
+
+	for !found {
+		timeStamp += initValue
+		// println(timeStamp)
+		for i := 0; i < len(input); {
+			gap := calcGap(input[i+1:])
+			nextNumber, err := strconv.Atoi(input[i+gap])
+			if err == nil {
+				if (timeStamp+i+gap)%nextNumber == 0 {
+					i += gap
+					if i == len(input)-1 {
+						found = true
+						break
+					}
+				} else {
+					break
+				}
+			} else {
+				println(err)
+				break
+			}
+
+		}
+	}
+	return timeStamp
+}
+
+func calcGap(slice []string) int {
+	total := 1
+	for _, v := range slice {
+		if v == "x" {
+			total++
+		} else {
+			return total
+		}
+	}
+	return 0
+}
+
 func calcTime(arrival int, item string, queue chan Bus) {
 	numItem, _ := strconv.Atoi(item)
 	initValue := numItem
@@ -72,4 +115,5 @@ func main() {
 	givenInput := strings.Split(string(file), "\n")
 
 	fmt.Println(partOne(givenInput))
+	fmt.Println(partTwo(strings.Split(givenInput[1], ",")))
 }
