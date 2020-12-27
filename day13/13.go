@@ -58,10 +58,10 @@ func partTwo(input []string) int {
 
 	for !found {
 		timeStamp += initValue
-		// println(timeStamp)
 		for i := 0; i < len(input); {
 			gap := calcGap(input[i+1:])
 			nextNumber, err := strconv.Atoi(input[i+gap])
+
 			if err == nil {
 				if (timeStamp+i+gap)%nextNumber == 0 {
 					i += gap
@@ -76,9 +76,9 @@ func partTwo(input []string) int {
 				println(err)
 				break
 			}
-
 		}
 	}
+
 	return timeStamp
 }
 
